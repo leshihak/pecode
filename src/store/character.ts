@@ -16,9 +16,9 @@ export interface Character {
 }
 
 export interface CharactersInfo {
-  count: number,
-  pages: number,
-  next: string,
+  count: number;
+  pages: number;
+  next: string;
   prev: string;
 }
 
@@ -99,14 +99,10 @@ export const filterCharacters = (
   gender: string
 ) => async (dispatch: any) => {
   try {
-    const url = `https://rickandmortyapi.com/api/character/${
-      species !== ""
-        ? `?species=${species}`
-        : status !== ""
-        ? `?status=${status}`
-        : gender !== ""
-        ? `?gender=${gender}`
-        : ""
+    const url = `https://rickandmortyapi.com/api/character/?${
+      species.length > 0 ? `species=${species}` : ""
+    }${status.length > 0 ? `&status=${status}` : ""}${
+      gender.length > 0 ? `&gender=${gender}` : ""
     }`;
     const response = await fetch(url, {
       method: "GET",
@@ -114,8 +110,14 @@ export const filterCharacters = (
 
     if (response) {
       const data = await response.json();
-      
-      dispatch(setCharacters(data.results));
+
+      if (data.error) {
+        dispatch(setCharacters([]));
+        dispatch(setCharactersInfo(1));
+      } else {
+        dispatch(setCharacters(data.results));
+        dispatch(setCharactersInfo(data.info));
+      }
     }
   } catch (error) {
     dispatch(getCharactersFailed());

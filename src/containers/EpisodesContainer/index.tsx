@@ -37,9 +37,7 @@ const EpisodesContainer: React.FC = () => {
   }, [episodesInfo, episodes]);
 
   useEffect(() => {
-    if (filterByName !== "") {
-      dispatch(filterEpisodes(filterByName));
-    }
+    dispatch(filterEpisodes(filterByName));
   }, [filterByName, dispatch]);
 
   const createData = (

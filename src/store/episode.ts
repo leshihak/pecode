@@ -102,8 +102,14 @@ export const filterEpisodes= (
 
     if (response) {
       const data = await response.json();
-      
-      dispatch(setEpisodes(data.results));
+
+      if (data.error) {
+        dispatch(setEpisodes([]));
+        dispatch(setEpisodesInfo(1));
+      } else {
+        dispatch(setEpisodes(data.results));
+        dispatch(setEpisodesInfo(data.info));
+      }
     }
   } catch (error) {
     dispatch(getEpisodesFailed());

@@ -38,13 +38,7 @@ const CharactersContainer: React.FC = () => {
   }, [charactersInfo, characters]);
   
   useEffect(() => {
-    if (
-      filterBySpecies !== "" ||
-      filterByStatus !== "" ||
-      filterByGender !== ""
-    ) {
-      dispatch(filterCharacters(filterBySpecies, filterByStatus, filterByGender));
-    }
+    dispatch(filterCharacters(filterBySpecies, filterByStatus, filterByGender));
   }, [filterBySpecies, filterByStatus, filterByGender, dispatch]);
 
   return isLoading ? (

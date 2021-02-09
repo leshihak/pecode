@@ -39,13 +39,7 @@ const LocationsContainer: React.FC = () => {
   }, [dispatch, currentPage]);
 
   useEffect(() => {
-    if (
-      filterByName !== "" ||
-      filterByType !== "" ||
-      filterByDimension !== ""
-    ) {
-      dispatch(filterLocations(filterByName, filterByType, filterByDimension));
-    }
+    dispatch(filterLocations(filterByName, filterByType, filterByDimension));
   }, [filterByName, filterByType, filterByDimension, dispatch]);
 
   useEffect(() => {

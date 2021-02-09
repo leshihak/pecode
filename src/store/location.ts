@@ -94,14 +94,10 @@ export const filterLocations = (
   dimension: string
 ) => async (dispatch: any) => {
   try {
-    const url = `https://rickandmortyapi.com/api/location${
-      name !== ""
-        ? `?name=${name}`
-        : type !== ""
-        ? `?type=${type}`
-        : dimension !== ""
-        ? `?dimension=${dimension}`
-        : ""
+    const url = `https://rickandmortyapi.com/api/location?${
+      name.length > 0 ? `name=${name}` : ""
+    }${type.length > 0 ? `&type=${type}` : ""}${
+      dimension.length > 0 ? `&dimension=${dimension}` : ""
     }`;
     const response = await fetch(url, {
       method: "GET",
@@ -109,8 +105,14 @@ export const filterLocations = (
 
     if (response) {
       const data = await response.json();
-      
-      dispatch(setLocations(data.results));
+
+      if (data.error) {
+        dispatch(setLocations([]));
+        dispatch(setLocationInfo(1));
+      } else {
+        dispatch(setLocations(data.results));
+        dispatch(setLocationInfo(data.info));
+      }
     }
   } catch (error) {
     dispatch(getLocationsFailed());
